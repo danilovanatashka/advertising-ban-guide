@@ -745,15 +745,33 @@
             
             <div class="resource-checker">
                 <h4>Проверить статус ресурса</h4>
-                <p>Проверить, ограничен ли доступ к информационному ресурсу, можно через универсальный сервис проверки</p>
-                <div class="checker-input">
-                    <input type="text" id="resourceUrl" placeholder="Введите URL ресурса для проверки">
-                    <button onclick="checkResource()">Проверить</button>
+                <p>Для проверки статуса информационного ресурса используйте официальный сервис Роскомнадзора</p>
+                <div style="text-align: center; margin: 25px 0;">
+                    <a href="https://blocklist.rkn.gov.ru" target="_blank" style="
+                        display: inline-block;
+                        padding: 15px 30px;
+                        background: #1976D2;
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 8px;
+                        font-size: 16px;
+                        font-weight: 500;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 2px 10px rgba(25, 118, 210, 0.2);
+                    " onmouseover="this.style.background='#1565C0'; this.style.transform='translateY(-2px)'" 
+                       onmouseout="this.style.background='#1976D2'; this.style.transform='translateY(0)'">
+                        🔍 Перейти к официальному сервису проверки
+                    </a>
                 </div>
-                <div id="checkerResult" class="checker-result"></div>
-                <p style="margin-top: 15px;">
-                    <a href="https://blocklist.rkn.gov.ru" target="_blank" style="color: #1976D2;">→ Перейти к сервису проверки</a>
-                </p>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #1976D2;">
+                    <h5 style="margin-bottom: 10px; color: #1976D2;">Как пользоваться сервисом:</h5>
+                    <ol style="margin-left: 20px; line-height: 1.6;">
+                        <li>Перейдите по ссылке на сайт blocklist.rkn.gov.ru</li>
+                        <li>Введите URL проверяемого ресурса</li>
+                        <li>Нажмите кнопку "Проверить"</li>
+                        <li>Получите актуальную информацию о статусе ресурса</li>
+                    </ol>
+                </div>
             </div>
         </div>
         
@@ -923,56 +941,6 @@
             }
         }
         
-        // Resource checker - define globally so onclick can access it
-        function checkResource() {
-            const input = document.getElementById('resourceUrl');
-            const result = document.getElementById('checkerResult');
-            
-            if (!input || !result) return;
-            
-            const url = input.value.trim().toLowerCase();
-            
-            if (!url) {
-                result.textContent = 'Введите URL для проверки';
-                result.className = 'checker-result show';
-                return;
-            }
-            
-            // Simple check based on known examples
-            const bannedDomains = ['instagram.com', 'facebook.com', 'discord.com', 'fb.com', 'meta.com'];
-            const allowedDomains = ['youtube.com', 'tiktok.com', 'telegram.org', 't.me'];
-            
-            let isBanned = false;
-            let isAllowed = false;
-            
-            for (const domain of bannedDomains) {
-                if (url.includes(domain)) {
-                    isBanned = true;
-                    break;
-                }
-            }
-            
-            if (!isBanned) {
-                for (const domain of allowedDomains) {
-                    if (url.includes(domain)) {
-                        isAllowed = true;
-                        break;
-                    }
-                }
-            }
-            
-            if (isBanned) {
-                result.textContent = '⚠️ Этот ресурс находится в списке запрещённых. Размещение рекламы запрещено.';
-                result.className = 'checker-result show blocked';
-            } else if (isAllowed) {
-                result.textContent = '✅ Этот ресурс не входит в список запрещённых. Размещение рекламы разрешено.';
-                result.className = 'checker-result show allowed';
-            } else {
-                result.textContent = 'ℹ️ Для точной проверки используйте официальный сервис blocklist.rkn.gov.ru';
-                result.className = 'checker-result show';
-            }
-        }
-        
         // Back to top button - define globally so onclick can access it
         function scrollToTop() {
             window.scrollTo({
@@ -1014,16 +982,6 @@
                     }
                 });
             });
-            
-            // Add enter key support for resource checker
-            const resourceInput = document.getElementById('resourceUrl');
-            if (resourceInput) {
-                resourceInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        checkResource();
-                    }
-                });
-            }
         });
         
         // Show/hide back to top button and highlight active navigation
